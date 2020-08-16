@@ -1,0 +1,17 @@
+package ${cfg.modulesPack}.service.mapstruct;
+
+import ${cfg.modulesPack}.pojo.entity.*;
+import ${cfg.modulesPack}.pojo.vo.*;
+import ${cfg.modulesPack}.pojo.dto.*;
+import org.mapstruct.Mapper;
+import cn.dreamchan.common.core.base.BaseMapStruct;
+import org.springframework.stereotype.Component;
+
+
+
+@SuppressWarnings("all")
+@Component
+@Mapper(componentModel = "spring")
+public interface ${entity}MapStruct extends BaseMapStruct<${entity}Vo, ${entity}Entity, ${entity}EditParam, ${entity}PageQueryParam >{
+
+}

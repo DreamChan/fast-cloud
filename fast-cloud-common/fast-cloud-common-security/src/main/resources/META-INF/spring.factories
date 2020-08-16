@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    cn.dreamchan.common.security.AutoConfiguration
+

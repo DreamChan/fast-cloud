@@ -1,0 +1,23 @@
+# spring 组件相关设置
+spring:
+  #minio 配置
+  minio:
+    url: http://127.0.0.1:9000
+    bucket: fast-cloud
+    access-key: minioadmin
+    secret-key: minioadmin
+
+
+# swagger 配置
+swagger:
+  enable: true
+  title: 系统模块接口文档
+  license: Powered By fast-cloud
+  authorization:
+    name: Fast Cloud System
+    auth-regex: ^.*$
+    authorization-scope-list:
+      - scope: server
+        description: 客户端授权范围
+    token-url-list:
+      - http://localhost:8080/auth/oauth/token

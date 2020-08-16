@@ -1,0 +1,28 @@
+package ${cfg.modulesPack}.pojo.vo;
+
+import java.time.LocalDateTime;
+import cn.afterturn.easypoi.excel.annotation.Excel;
+
+import lombok.Data;
+
+
+/**
+ * $!{table.comment}
+ *
+ * @author ${author}
+ */
+@Data
+public class ${entity}Vo {
+
+## ----------  BEGIN 字段循环遍历  ----------
+#foreach($field in ${table.fields})
+
+#if("$!field.comment" != "")
+	// ${field.comment}
+#end
+	@Excel(name = "${field.comment}", width = 20)
+	private ${field.propertyType} ${field.propertyName};
+#end
+## ----------  END 字段循环遍历  ----------
+
+}

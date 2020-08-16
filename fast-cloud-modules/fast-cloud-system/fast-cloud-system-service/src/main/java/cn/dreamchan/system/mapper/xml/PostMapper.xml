@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dreamchan.system.mapper.PostMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.dreamchan.system.pojo.entity.PostEntity">
+        <id column="post_id" property="postId" />
+        <result column="post_code" property="postCode" />
+        <result column="post_name" property="postName" />
+        <result column="status" property="status" />
+        <result column="remark" property="remark" />
+        <result column="order_num" property="orderNum" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+            post_id, post_code, post_name, status, remark, order_num, create_by,  create_time, update_by,  update_time
+    </sql>
+
+    <select id="selectPostsByUserName" parameterType="String" resultMap="BaseResultMap">
+        select
+            p.post_id,
+            p.post_name,
+            p.post_code
+        from sys_post p
+        left join sys_user_post up on up.post_id = p.post_id
+        left join sys_user u on u.user_id = up.user_id
+        where
+            u.user_name = #{userName}
+	</select>
+
+    <select id="selectPostListByUserId" parameterType="Long" resultType="Integer">
+		select
+		    p.post_id
+        from sys_post p
+        left join sys_user_post up on up.post_id = p.post_id
+        left join sys_user u on u.user_id = up.user_id
+	    where
+	        u.user_id = #{userId}
+	</select>
+</mapper>

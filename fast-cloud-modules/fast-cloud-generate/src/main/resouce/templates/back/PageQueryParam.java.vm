@@ -1,0 +1,27 @@
+package ${cfg.modulesPack}.pojo.dto;
+
+import java.time.LocalDateTime;
+import ${cfg.BasePageQueryParam};
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+/**
+ * $!{table.comment}
+ *
+ * @author ${author}
+ */
+@EqualsAndHashCode(callSuper = false)
+@Data
+public class ${entity}PageQueryParam extends BasePageQueryParam {
+
+## ----------  BEGIN 字段循环遍历  ----------
+#foreach($field in ${table.fields})
+
+#if("$!field.comment" != "")
+	// ${field.comment}
+#end
+	private ${field.propertyType} ${field.propertyName};
+#end
+## ----------  END 字段循环遍历  ----------
+
+}

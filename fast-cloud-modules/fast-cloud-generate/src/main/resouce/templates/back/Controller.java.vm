@@ -1,0 +1,133 @@
+package ${package.Controller};
+
+import cn.afterturn.easypoi.excel.entity.ExportParams;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Arrays;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import cn.dreamchan.common.core.biz.R;
+import cn.dreamchan.common.core.biz.ResObject;
+import cn.dreamchan.common.core.enums.EventLogEnum;
+import cn.dreamchan.common.data.utils.ExcelUtils;
+import cn.dreamchan.common.log.annotation.EventLog;
+import io.swagger.annotations.Api;
+import ${cfg.BaseController};
+import ${cfg.modulesPack}.pojo.entity.*;
+import ${cfg.modulesPack}.pojo.vo.*;
+import ${cfg.modulesPack}.pojo.dto.*;
+import ${cfg.modulesPack}.service.mapstruct.*;
+import ${cfg.modulesPack}.service.${entity}Service;
+## 将变量首字母变小写，定义驼峰法变量名
+#set($className = $!cfg.stringUtils.uncapitalize($!entity))
+
+#foreach($field in ${table.fields})
+#if(${field.keyFlag})
+	#set($pkColumn = ${field})
+#end
+#end
+
+/**
+ * ${table.comment}管理
+ *
+ * @author ${author}
+ */
+@Api(tags = "${table.comment}管理")
+@Slf4j
+@RestController
+@RequestMapping("/${cfg.moduleName}/${className}")
+public class ${entity}Controller extends BaseController<${entity}PageQueryParam, ${entity}Entity> {
+
+	@Autowired
+	private ${entity}Service ${className}Service;
+	@Autowired
+	private ${entity}MapStruct ${className}MapStruct;
+
+	/**
+	* ${table.comment} 分页列表
+	*/
+	@ApiOperation("${table.comment}分页列表")
+	@PreAuthorize("hasPermission('/${cfg.moduleName}/${className}',  '${cfg.moduleName}:${className}:query')")
+	@GetMapping(value = "/pageList")
+	public ResObject pageList(@Valid ${entity}PageQueryParam param) {
+
+		Page<${entity}Entity> page = new Page<>(param.getPageNum(), param.getPageSize());
+		IPage<${entity}Entity> pageList = ${className}Service.page(page, this.getQueryWrapper(${className}MapStruct, param));
+		Page<${entity}Vo> ${className}VoPage = ${className}MapStruct.toVoList(pageList);
+		return R.success(${className}VoPage);
+	}
+
+	/**
+	* 获取${table.comment}
+	*/
+	@ApiOperation("获取${table.comment}")
+	@ApiImplicitParam(name = "${pkColumn.propertyName}", required = true, dataType = "Long", paramType = "path")
+	@PreAuthorize("hasPermission('/${cfg.moduleName}/${className}',  '${cfg.moduleName}:${className}:query')")
+	@GetMapping("/{${pkColumn.propertyName}}")
+	public ResObject get(@PathVariable Long ${pkColumn.propertyName}) {
+		${entity}Entity ${className} = ${className}Service.getById(${pkColumn.propertyName});
+		return R.success(${className}MapStruct.toVo(${className}));
+	}
+
+	/**
+	* 新增${table.comment}
+	*/
+	@ApiOperation("新增${table.comment}")
+	@ApiImplicitParam(name = "${entity}EditParam ", value = "新增${table.comment}", dataType = "${entity}EditParam")
+	@PreAuthorize("hasPermission('/${cfg.moduleName}/${className}',  '${cfg.moduleName}:${className}:add')")
+	@EventLog(message = "新增${table.comment}", businessType = EventLogEnum.CREATE)
+	@PostMapping
+	public ResObject save(@Valid @RequestBody ${entity}EditParam ${className}EditParam) {
+		${entity}Entity ${className} = ${className}MapStruct.toEntity(${className}EditParam);
+		return R.toRes(${className}Service.save(${className}));
+	}
+
+	/**
+	* 修改${table.comment}
+	*/
+	@ApiOperation("修改${table.comment}")
+	@ApiImplicitParam(name = "${entity}EditParam ", value = "修改${table.comment}", dataType = "${entity}EditParam")
+	@PreAuthorize("hasPermission('/${cfg.moduleName}/${className}',  '${cfg.moduleName}:${className}:edit')")
+	@EventLog(message = "修改${table.comment}", businessType = EventLogEnum.UPDATE)
+	@PutMapping
+	public ResObject edit(@Valid @RequestBody ${entity}EditParam ${className}EditParam) {
+		${entity}Entity ${className} = ${className}MapStruct.toEntity(${className}EditParam);
+		return R.toRes(${className}Service.updateById(${className}));
+	}
+
+	/**
+	* 删除${table.comment}
+	*/
+	@ApiOperation("删除${table.comment}")
+	@ApiImplicitParam(name = "${pkColumn.propertyName}", required = true, dataType = "Long", paramType = "path")
+	@PreAuthorize("hasPermission('/${cfg.moduleName}/${className}',  '${cfg.moduleName}:${className}:delete')")
+	@EventLog(message = "删除${table.comment}", businessType = EventLogEnum.DELETE)
+	@DeleteMapping("/{${pkColumn.propertyName}s}")
+	public ResObject delete(@PathVariable Long[] ${pkColumn.propertyName}s) {
+		return R.toRes(${className}Service.removeByIds(Arrays.asList(${pkColumn.propertyName}s)));
+	}
+
+	/**
+	* 导出${table.comment}
+	*/
+	@ApiOperation("导出${table.comment}")
+	@PreAuthorize("hasPermission('/${cfg.moduleName}/${className}',  '${cfg.moduleName}:${className}:export')")
+	@SneakyThrows
+	@EventLog(message = "导出${table.comment}", businessType = EventLogEnum.EXPORT)
+	@PostMapping(value = "/exportXls")
+	public void exportXls(${entity}PageQueryParam param, HttpServletResponse response) {
+		List<${entity}Entity> list = ${className}Service.list(this.getQueryWrapper(${className}MapStruct, param));
+		List<${entity}Vo> ${className}VoList = ${className}MapStruct.toVoList(list);
+		ExcelUtils.exportExcel(${className}VoList, ${entity}Vo.class, "${table.comment}", new ExportParams(), response);
+	}
+
+}

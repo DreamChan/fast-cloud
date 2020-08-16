@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dreamchan.monitor.mapper.OperLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.dreamchan.monitor.pojo.entity.OperLogEntity">
+        <id column="oper_log_id" property="operLogId" />
+        <result column="message" property="message" />
+        <result column="business_type" property="businessType" />
+        <result column="request_method" property="requestMethod" />
+        <result column="request_param" property="requestParam" />
+        <result column="request_date" property="requestDate" />
+        <result column="request_url" property="requestUrl" />
+        <result column="execute_time" property="executeTime" />
+        <result column="user_id" property="userId" />
+        <result column="user_name" property="userName" />
+        <result column="oper_ip" property="operIp" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+            oper_log_id, message, business_type, request_method, request_param, request_date, request_url, execute_time, user_id, user_name, oper_ip, oper_location, json_result, status
+    </sql>
+
+</mapper>

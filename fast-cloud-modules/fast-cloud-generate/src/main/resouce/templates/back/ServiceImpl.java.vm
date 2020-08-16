@@ -1,0 +1,19 @@
+package ${package.ServiceImpl};
+
+import ${package.Mapper}.${table.mapperName};
+import ${package.Service}.${table.serviceName};
+import ${cfg.BaseService};
+import ${cfg.modulesPack}.pojo.entity.${entity}Entity;
+
+import org.springframework.stereotype.Service;
+
+/**
+ * $!{table.comment} 服务实现类
+ *
+ * @author ${author}
+ */
+@Service
+public class ${table.serviceImplName} extends BaseService<${table.mapperName}, ${entity}Entity> implements ${table.serviceName} {
+
+}
+

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <!--定义日志文件的存储地址 -->
+	<property name="APP_NAME" value="fast-cloud-oss"/>
+    <property name="LOG_HOME" value="./logs"/>
+
+    <!-- 日志输出格式 -->
+    <property name="LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %-5level %logger{20} - [%method,%line] - %msg%n" />
+
+    <property name="LOG_CONSOLE_PATTERN" value="%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger{10}) - %cyan(%msg%n)" />
+
+    <!-- 控制台输出 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_CONSOLE_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 系统日志输出 -->
+    <appender name="file_info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${APP_NAME}-info.log</file>
+        <!-- 循环政策：基于时间创建日志文件 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志文件名格式 -->
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}-info.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 日志最大的历史 60天 -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 过滤的级别 -->
+            <level>INFO</level>
+            <!-- 匹配时的操作：接收（记录） -->
+            <onMatch>ACCEPT</onMatch>
+            <!-- 不匹配时的操作：拒绝（不记录） -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <appender name="file_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${APP_NAME}-error.log</file>
+        <!-- 循环政策：基于时间创建日志文件 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志文件名格式 -->
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 日志最大的历史 60天 -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 过滤的级别 -->
+            <level>ERROR</level>
+            <!-- 匹配时的操作：接收（记录） -->
+            <onMatch>ACCEPT</onMatch>
+            <!-- 不匹配时的操作：拒绝（不记录） -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!--nacos 心跳 INFO 屏蔽-->
+    <logger name="com.alibaba.nacos" level="OFF">
+        <appender-ref ref="console"/>
+    </logger>
+
+    <!--系统操作日志-->
+    <root level="debug">
+        <appender-ref ref="console" />
+        <appender-ref ref="file_info" />
+        <appender-ref ref="file_error" />
+    </root>
+</configuration>

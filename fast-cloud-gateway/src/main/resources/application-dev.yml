@@ -1,0 +1,41 @@
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      routes:
+        # 认证中心
+        - id: fast-cloud-auth
+          uri: lb://fast-cloud-auth
+          predicates:
+            - Path=/auth/**
+          filters:
+            - name: ValidateCodeFilter
+            - StripPrefix=1
+        # 系统模块
+        - id: fast-cloud-system-service
+          uri: lb://fast-cloud-system-service
+          predicates:
+            - Path=/system/**
+          filters:
+            - name: BlackListUrlFilter
+              args:
+                blacklistUrl:
+                  - /user/info/*
+            - StripPrefix=1
+        # 日志模块
+        - id: fast-cloud-monitor-service
+          uri: lb://fast-cloud-monitor-service
+          predicates:
+            - Path=/monitor/**
+          filters:
+            - StripPrefix=1
+        # 对象存储模块
+        - id: fast-cloud-oss-service
+          uri: lb://fast-cloud-oss-service
+          predicates:
+            - Path=/oss/**
+          filters:
+            - StripPrefix=1

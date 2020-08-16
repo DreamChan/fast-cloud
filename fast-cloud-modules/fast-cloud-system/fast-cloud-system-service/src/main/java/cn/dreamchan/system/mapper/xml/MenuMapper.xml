@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dreamchan.system.mapper.MenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.dreamchan.system.pojo.entity.MenuEntity">
+        <id column="menu_id" property="menuId" />
+        <result column="menu_name" property="menuName" />
+        <result column="menu_perms" property="menuPerms" />
+        <result column="router_path" property="routerPath" />
+        <result column="menu_type" property="menuType" />
+        <result column="parent_id" property="parentId" />
+        <result column="component" property="component" />
+        <result column="is_link" property="isLink" />
+        <result column="visible" property="visible" />
+        <result column="status" property="status" />
+        <result column="icon" property="icon" />
+        <result column="remark" property="remark" />
+        <result column="order_num" property="orderNum" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+            menu_id, menu_name, menu_perms, menu_type, router_path,  parent_id, component, is_link, visible, status, icon, remark, order_num, create_by,  create_time, update_by,  update_time
+    </sql>
+
+    <select id="selectMenuPermsByUserId" parameterType="Long" resultType="String">
+        select
+            distinct m.menu_perms
+        from sys_menu m
+        left join sys_role_menu rm on m.menu_id = rm.menu_id
+        left join sys_user_role ur on rm.role_id = ur.role_id
+        left join sys_role r on r.role_id = ur.role_id
+        where
+            m.status = '0' and r.status = '0' and ur.user_id = #{userId}
+	</select>
+
+    <select id="selectMenuTreeAll" resultMap="BaseResultMap">
+		select
+            distinct m.menu_id,
+            m.parent_id,
+            m.menu_name,
+            m.router_path,
+            m.component,
+            m.visible,
+            m.status,
+            ifnull(m.menu_perms,'') as menu_perms,
+            m.is_link,
+            m.menu_type,
+            m.icon,
+            m.order_num,
+            m.create_time
+		from sys_menu m
+		where
+		    m.menu_type in ('1', '2') and m.status = 0
+		order by m.parent_id, m.order_num
+	</select>
+
+
+    <select id="selectMenuTreeByUserId" parameterType="Long" resultMap="BaseResultMap">
+		select
+		    distinct m.menu_id,
+            m.parent_id,
+            m.menu_name,
+            m.router_path,
+            m.component,
+            m.visible,
+            m.status,
+            ifnull(m.menu_perms,'') as menu_perms,
+            m.is_link,
+            m.menu_type,
+            m.icon,
+            m.order_num,
+            m.create_time
+		from sys_menu m
+        left join sys_role_menu rm on m.menu_id = rm.menu_id
+        left join sys_user_role ur on rm.role_id = ur.role_id
+        left join sys_role ro on ur.role_id = ro.role_id
+        left join sys_user u on ur.user_id = u.user_id
+		where
+		    u.user_id = #{userId} and m.menu_type in ('1', '2') and m.status = 0  AND ro.status = 0
+		order by m.parent_id, m.order_num
+	</select>
+
+
+    <select id="selectMenuList"  resultMap="BaseResultMap">
+        select
+            distinct m.menu_id,
+            m.parent_id,
+            m.menu_name,
+            m.router_path,
+            m.component,
+            m.visible,
+            m.status,
+            ifnull(m.menu_perms,'') as menu_perms,
+            m.is_link,
+            m.menu_type,
+            m.icon,
+            m.order_num,
+            m.create_time
+        from sys_menu m
+        <where>
+            <if test="menuName != null and menuName != ''">
+                AND menu_name like concat('%', #{menuName}, '%')
+            </if>
+            <if test="visible != null and visible != ''">
+                AND visible = #{visible}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+        </where>
+        order by parent_id, order_num
+    </select>
+
+    <select id="selectMenuListByUserId"  resultMap="BaseResultMap">
+        select
+            distinct m.menu_id,
+            m.parent_id,
+            m.menu_name,
+            m.router_path,
+            m.component,
+            m.visible,
+            m.status,
+            ifnull(m.menu_perms,'') as menu_perms,
+            m.is_link,
+            m.menu_type,
+            m.icon,
+            m.order_num,
+            m.create_time
+        from sys_menu m
+        left join sys_role_menu rm on m.menu_id = rm.menu_id
+        left join sys_user_role ur on rm.role_id = ur.role_id
+        left join sys_role ro on ur.role_id = ro.role_id
+        where
+            ur.user_id = #{params.userId}
+        <if test="menuName != null and menuName != ''">
+            AND menu_name like concat('%', #{menuName}, '%')
+        </if>
+        <if test="visible != null and visible != ''">
+            AND visible = #{visible}
+        </if>
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+        order by m.parent_id, m.order_num
+    </select>
+
+
+    <select id="selectMenuListByRoleId" parameterType="Long" resultType="Integer">
+		select
+            m.menu_id,
+            m.parent_id
+		from sys_menu m
+        left join sys_role_menu rm on m.menu_id = rm.menu_id
+        where rm.role_id = #{roleId}
+        	and m.menu_id not in (select m.parent_id from sys_menu m inner join sys_role_menu rm on m.menu_id = rm.menu_id and rm.role_id = #{roleId})
+		order by m.parent_id, m.order_num
+	</select>
+
+
+</mapper>

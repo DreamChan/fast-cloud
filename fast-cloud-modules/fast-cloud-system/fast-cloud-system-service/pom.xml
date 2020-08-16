@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>fast-cloud-system</artifactId>
+        <groupId>cn.dreamchan</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>fast-cloud-system-service</artifactId>
+
+    <dependencies>
+        <!--  Nacos 服务注册 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+
+        <!--  Nacos 配置中心 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.dreamchan</groupId>
+            <artifactId>fast-cloud-common-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.dreamchan</groupId>
+            <artifactId>fast-cloud-common-data</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.dreamchan</groupId>
+            <artifactId>fast-cloud-common-datascope</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.dreamchan</groupId>
+            <artifactId>fast-cloud-common-log</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.dreamchan</groupId>
+            <artifactId>fast-cloud-common-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.dreamchan</groupId>
+            <artifactId>fast-cloud-common-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.dreamchan</groupId>
+            <artifactId>fast-cloud-common-swagger</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.dreamchan</groupId>
+            <artifactId>fast-cloud-oss-api</artifactId>
+        </dependency>
+    </dependencies>
+</project>

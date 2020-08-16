@@ -1,0 +1,14 @@
+package ${package.Mapper};
+
+import ${cfg.modulesPack}.pojo.entity.${entity}Entity;
+import ${superMapperClassPackage};
+
+/**
+ * $!{table.comment} Mapper 接口
+ *
+ * @author ${author}
+ */
+public interface ${table.mapperName} extends ${superMapperClass}<${entity}Entity> {
+
+}
+

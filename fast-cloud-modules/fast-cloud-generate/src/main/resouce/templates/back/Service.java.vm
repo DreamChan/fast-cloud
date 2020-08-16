@@ -1,0 +1,15 @@
+package ${package.Service};
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import ${cfg.modulesPack}.pojo.entity.${entity}Entity;
+
+/**
+ *
+ * $!{table.comment} 服务类
+ *
+ * @author ${author}
+ */
+public interface ${table.serviceName} extends IService<${entity}Entity>{
+
+}
+

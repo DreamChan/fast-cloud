@@ -1,0 +1,60 @@
+import request from '@/utils/request'
+
+#foreach($field in ${table.fields})
+  #if(${field.keyFlag})
+    #set($pkColumn = ${field})
+  #end
+#end
+
+// 查询${table.comment}列表
+export function list${entity}(query) {
+  return request({
+    url: '/${cfg.moduleName}/${className}/pageList',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询${table.comment}详细
+export function get${entity}(${pkColumn.propertyName}) {
+  return request({
+    url: '/${cfg.moduleName}/${className}/' + ${pkColumn.propertyName},
+    method: 'get'
+  })
+}
+
+// 新增${table.comment}
+export function add${entity}(data) {
+  return request({
+    url: '/${cfg.moduleName}/${className}',
+    method: 'post',
+    data: data
+  })
+}
+
+// 修改${table.comment}
+export function update${entity}(data) {
+  return request({
+    url: '/${cfg.moduleName}/${className}',
+    method: 'put',
+    data: data
+  })
+}
+
+// 删除${table.comment}
+export function del${entity}(${pkColumn.propertyName}) {
+  return request({
+    url: '/${cfg.moduleName}/${className}/' + ${pkColumn.propertyName},
+    method: 'delete'
+  })
+}
+
+// 导出${table.comment}
+export function export${entity}(query) {
+  return request({
+    url: '/${cfg.moduleName}/${className}/exportXls',
+    method: 'get',
+    params: query,
+    responseType: 'blob'
+  })
+}

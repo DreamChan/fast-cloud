@@ -1,0 +1,54 @@
+#mybatis plus 设置
+mybatis-plus:
+  mapper-locations: classpath:cn/dreamchan/**/xml/*Mapper.xml
+  global-config:
+    # 关闭MP3.0自带的banner
+    banner: false
+    db-config:
+      #主键类型  0:"数据库ID自增",1:"该类型为未设置主键类型", 2:"用户输入ID",3:"全局唯一ID (数字类型唯一ID)", 4:"全局唯一ID UUID",5:"字符串全局唯一ID (idWorker 的字符串表示)";
+      id-type: ASSIGN_ID
+      # 默认数据库表下划线命名
+      table-underline: true
+      select-strategy: not_empty
+      insert-strategy: not_null
+      update-strategy: not_null
+  configuration:
+    # 是否开启自动驼峰命名规则映射:从数据库列名到Java属性驼峰命名的类似映射
+    map-underscore-to-camel-case: true
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# feign 配置
+feign:
+  sentinel:
+    enabled: true
+  okhttp:
+    enabled: true
+  httpclient:
+    enabled: false
+  client:
+    config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 10000
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+
+
+# 认证配置
+security:
+  oauth2:
+    client:
+      client-id: fastcloud
+      client-secret: 123456
+      scope: server
+    resource:
+      loadBalanced: true
+      token-info-uri: http://fast-cloud-auth/oauth/check_token
+    ignoreUrls:
+      - /v2/api-docs
+      - /user/info/*
+
