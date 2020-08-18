@@ -12,6 +12,7 @@
 - Nacos
 - Sentinel
 - Mybatis Plus
+- HikariCP
 - minio
 - knife4j
 - lombok
